@@ -1,31 +1,46 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import './AddJobForm.css';
+import React from "react";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import Select from "react-select";
 
-// Validation Schema using Yup
+// Define options for ComboBox
+const options = [
+  { value: "kiran", label: "kiran" },
+  { value: "kumar", label: "kumar" },
+  { value: "John", label: "John" },
+  { value: "Ben", label: "Ben" },
+  { value: "Jen", label: "Jen" },
+];
+
+// Define validation schema for the main form
 const validationSchema = Yup.object({
-  title: Yup.string().required('Job title is required'),
-  company: Yup.string().required('Company name is required'),
-  description: Yup.string().required('Job description is required'),
-  image: Yup.string().url('Must be a valid URL').required('Image URL is required'),
+  name: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email format").required("Required"),
+  dynamicFields: Yup.array()
+    .of(Yup.string().required("Required"))
+    .max(5, "You can add up to 5 ComboBox fields only"),
 });
 
-function AddJobForm({ onSubmit }) {
+const ExistingFormWithComboBox = () => {
+  const initialValues = {
+    title: "",
+    company: "",
+    description: "",
+    people: "",
+    dynamicFields: [],
+  };
+
   return (
-    <div className="form-container">
-      <h2>Add New Job</h2>
-      <Formik
-        initialValues={{ title: '', company: '', description: '', image: '' }}
-        validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          onSubmit(values);
-          resetForm();
-        }}
-      >
-        {() => (
-          <Form className="job-form">
-            <div className="form-field">
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        console.log("Form values:", values);
+      }}
+    >
+      {({ values, setFieldValue }) => (
+        <Form>
+          <div className="form-field">
               <label htmlFor="title">Job Title</label>
               <Field name="title" type="text" placeholder="Enter job title" />
               <ErrorMessage name="title" component="div" className="error" />
@@ -44,19 +59,53 @@ function AddJobForm({ onSubmit }) {
             </div>
 
             <div className="form-field">
-              <label htmlFor="image">Image URL</label>
-              <Field name="image" type="text" placeholder="Enter image URL" />
-              <ErrorMessage name="image" component="div" className="error" />
+              <label htmlFor="people">Number of people</label>
+              <Field name="people" type="text" placeholder="Enter number of people" />
+              <ErrorMessage name="people" component="div" className="error" />
             </div>
 
-            <div className="form-field">
+          <FieldArray name="dynamicFields">
+            {({ push, remove }) => (
+              <>
+                {values.dynamicFields.map((_, index) => (
+                  <div key={index} style={{ marginBottom: "10px" }}>
+                     <Select
+                      options={options}
+                      name={`dynamicFields[${index}]`}
+                      value={values.dynamicFields[index] || null}
+                      onChange={(option) =>
+                        setFieldValue(`dynamicFields[${index}]`, option)
+                      }
+                      isSearchable
+                      placeholder="Select an option"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      disabled={values.dynamicFields.length === 1}
+                    >
+                      Remove
+                    </button>
+                    <ErrorMessage name={`dynamicFields[${index}]`} component="div" style={{ color: "red" }} />
+                  </div>
+                ))}
+                {values.dynamicFields.length < 5 && (
+                  <button type="button" className="btn" onClick={() => push("")}>
+                    Add Vendor
+                  </button>
+                )}
+              </>
+            )}
+          </FieldArray>
+
+
+          <div className="form-field">
               <button type="submit" className="btn">Add Job</button>
             </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
+        </Form>
+      )}
+    </Formik>
   );
-}
+};
 
-export default AddJobForm;
+export default ExistingFormWithComboBox;

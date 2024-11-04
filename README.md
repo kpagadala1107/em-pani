@@ -68,3 +68,35 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+Client registers in the app.
+
+Client can fill a form with fields title, description, number of people, date, time, select a vendor from the list of preferred vendors. If vendor not found in the list, should be able to enter.
+
+On clicking publish - send email to the vendor
+
+Vendor can click the link in email to go to app and register to see the posts he recived.
+Accept the post or reject it.
+
+Vendor gets added to vendor collection in db.
+
+client can see the posts in my-posts tab. 
+clicking a post can open the post in new tab and see status and comments.
+
+
+
+
+Tasks:
+Create form with fields on submit send the form fields as request to backend endpoint.
+
+Backend endpoint to save the post
+
+trigger email with the post includes link to the app.
+
+register client or vendor
+
+
+
+
+
