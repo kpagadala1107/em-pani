@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
+import  "./AddJobForm.css";
 
 // Define options for ComboBox
 const options = [
@@ -14,10 +15,20 @@ const options = [
 
 // Define validation schema for the main form
 const validationSchema = Yup.object({
-  name: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email format").required("Required"),
+  title: Yup.string().required("Required"),
+  company: Yup.string().required("Required"),
+  description: Yup.string().required("Required"),
+  people: Yup.number()
+    .typeError("Must be a number")
+    .positive("Must be positive")
+    .required("Required"),
   dynamicFields: Yup.array()
-    .of(Yup.string().required("Required"))
+    .of(
+      Yup.object().shape({
+        label: Yup.string().required("Required"),
+        value: Yup.string().required("Required")
+      })
+    )
     .max(5, "You can add up to 5 ComboBox fields only"),
 });
 
@@ -27,7 +38,7 @@ const ExistingFormWithComboBox = () => {
     company: "",
     description: "",
     people: "",
-    dynamicFields: [],
+    dynamicFields: [{ label: "", value: "" }],
   };
 
   return (
@@ -36,40 +47,41 @@ const ExistingFormWithComboBox = () => {
       validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log("Form values:", values);
+        alert("Form submitted successfully!");
       }}
     >
       {({ values, setFieldValue }) => (
         <Form>
           <div className="form-field">
-              <label htmlFor="title">Job Title</label>
-              <Field name="title" type="text" placeholder="Enter job title" />
-              <ErrorMessage name="title" component="div" className="error" />
-            </div>
+            <label htmlFor="title">Job Title</label>
+            <Field name="title" type="text" placeholder="Enter job title" />
+            <ErrorMessage name="title" component="div" className="error" />
+          </div>
 
-            <div className="form-field">
-              <label htmlFor="company">Company</label>
-              <Field name="company" type="text" placeholder="Enter company name" />
-              <ErrorMessage name="company" component="div" className="error" />
-            </div>
+          <div className="form-field">
+            <label htmlFor="company">Company</label>
+            <Field name="company" type="text" placeholder="Enter company name" />
+            <ErrorMessage name="company" component="div" className="error" />
+          </div>
 
-            <div className="form-field">
-              <label htmlFor="description">Job Description</label>
-              <Field name="description" as="textarea" placeholder="Enter job description" />
-              <ErrorMessage name="description" component="div" className="error" />
-            </div>
+          <div className="form-field">
+            <label htmlFor="description">Job Description</label>
+            <Field name="description" as="textarea" placeholder="Enter job description" />
+            <ErrorMessage name="description" component="div" className="error" />
+          </div>
 
-            <div className="form-field">
-              <label htmlFor="people">Number of people</label>
-              <Field name="people" type="text" placeholder="Enter number of people" />
-              <ErrorMessage name="people" component="div" className="error" />
-            </div>
+          <div className="form-field">
+            <label htmlFor="people">Number of people</label>
+            <Field name="people" type="text" placeholder="Enter number of people" />
+            <ErrorMessage name="people" component="div" className="error" />
+          </div>
 
           <FieldArray name="dynamicFields">
             {({ push, remove }) => (
               <>
-                {values.dynamicFields.map((_, index) => (
+                {values.dynamicFields.map((field, index) => (
                   <div key={index} style={{ marginBottom: "10px" }}>
-                     <Select
+                    <Select
                       options={options}
                       name={`dynamicFields[${index}]`}
                       value={values.dynamicFields[index] || null}
@@ -83,14 +95,23 @@ const ExistingFormWithComboBox = () => {
                       type="button"
                       onClick={() => remove(index)}
                       disabled={values.dynamicFields.length === 1}
+                      style={{ marginLeft: "10px" }}
                     >
                       Remove
                     </button>
-                    <ErrorMessage name={`dynamicFields[${index}]`} component="div" style={{ color: "red" }} />
+                    <ErrorMessage
+                      name={`dynamicFields[${index}].label`}
+                      component="div"
+                      style={{ color: "red" }}
+                    />
                   </div>
                 ))}
                 {values.dynamicFields.length < 5 && (
-                  <button type="button" className="btn" onClick={() => push("")}>
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={() => push({ label: "", value: "" })}
+                  >
                     Add Vendor
                   </button>
                 )}
@@ -98,10 +119,9 @@ const ExistingFormWithComboBox = () => {
             )}
           </FieldArray>
 
-
           <div className="form-field">
-              <button type="submit" className="btn">Add Job</button>
-            </div>
+            <button type="submit" className="btn">Add Job</button>
+          </div>
         </Form>
       )}
     </Formik>
