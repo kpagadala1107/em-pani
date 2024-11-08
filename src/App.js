@@ -8,10 +8,13 @@ import Jobs from './pages/Jobs';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Footer from './components/Footer';
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import './App.css';
 
 function App() {
   return (
+    <Provider store={store}>
     <Router>
       <div className="App">
         <Navbar />
@@ -26,6 +29,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </Provider>
   );
 }
 

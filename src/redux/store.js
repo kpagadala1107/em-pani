@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import freelancersReducer from './freelancersSlice.js';
-import jobsReducer from './jobsSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import formReducer from "./JobSlice";
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    freelancers: freelancersReducer,
-    jobs: jobsReducer,
+    form: formReducer,
   },
 });
+
+export default store;

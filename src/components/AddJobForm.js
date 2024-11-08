@@ -3,6 +3,8 @@ import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
 import  "./AddJobForm.css";
+import { useDispatch } from "react-redux";
+import { saveFormData } from "../redux/JobSlice"; 
 
 // Define options for ComboBox
 const options = [
@@ -33,6 +35,8 @@ const validationSchema = Yup.object({
 });
 
 const ExistingFormWithComboBox = () => {
+  const dispatch = useDispatch();
+
   const initialValues = {
     title: "",
     company: "",
@@ -47,6 +51,7 @@ const ExistingFormWithComboBox = () => {
       validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log("Form values:", values);
+        dispatch(saveFormData(values));
         alert("Form submitted successfully!");
       }}
     >
