@@ -31,7 +31,7 @@ const validationSchema = Yup.object({
         value: Yup.string().required("Required")
       })
     )
-    .max(5, "You can add up to 5 ComboBox fields only"),
+    .max(3, "You can add up to 3 ComboBox fields only"),
 });
 
 const ExistingFormWithComboBox = () => {
@@ -52,7 +52,7 @@ const ExistingFormWithComboBox = () => {
       onSubmit={(values) => {
         console.log("Form values:", values);
         dispatch(saveFormData(values));
-        alert("Form submitted successfully!");
+        // alert("Form submitted successfully!");
       }}
     >
       {({ values, setFieldValue }) => (
@@ -111,7 +111,7 @@ const ExistingFormWithComboBox = () => {
                     />
                   </div>
                 ))}
-                {values.dynamicFields.length < 5 && (
+                {values.dynamicFields.length < 3 && (
                   <button
                     type="button"
                     className="btn"

@@ -69,7 +69,6 @@ function Jobs() {
 
  
   useEffect(() => {
-    debugger
       // Replace with your API endpoint
       if (formData?.title){
         setJobs(prevJobs => [...prevJobs, formData] )
