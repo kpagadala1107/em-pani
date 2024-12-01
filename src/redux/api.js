@@ -11,11 +11,22 @@ const api = axios.create({
 
 export const saveWork = async (formData) => {
   try {
-    const response = await api.post("/save-work", formData); // Replace `/save-data` with your endpoint
-    // const response = await api.get("/get-work"); 
+    const response = await api.post("/save-work", formData);
     return response.data;
   } catch (error) {
     console.error("Error saving form data:", error);
     throw error;
   }
 };
+
+
+export const getWork =  () => {
+  try {
+    const response = api.get("/get-work"); 
+    return response.data;
+  } catch (error) {
+    console.error("Error getting jobs data:", error);
+    throw error;
+  }
+};
+

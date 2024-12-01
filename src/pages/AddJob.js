@@ -9,7 +9,7 @@ function AddJob() {
 
   return (
     <div className="App">
-      <h1>Freelance Marketplace</h1>
+      <h1>Post Job</h1>
       <AddJobForm onSubmit={handleAddJob} />
     </div>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState }  from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
@@ -44,17 +44,32 @@ const ExistingFormWithComboBox = () => {
     people: "",
     dynamicFields: [{ label: "", value: "" }],
   };
+  const [showBanner, setShowBanner] = useState(false);
 
   return (
+<div>
+    {showBanner && (
+      <div style={{ backgroundColor:"#4CAF50", color: "white", padding: "10px" }}>
+        Job Posted successfully!
+      </div>
+    )}
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         console.log("Form values:", values);
         dispatch(saveFormData(values));
-        // alert("Form submitted successfully!");
+        resetForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Show success banner
+        setShowBanner(true);
+    
+        // Hide the banner after 3 seconds
+        setTimeout(() => setShowBanner(false), 3000);
       }}
     >
+      
       {({ values, setFieldValue }) => (
         <Form>
           <div className="form-field">
@@ -136,6 +151,7 @@ const ExistingFormWithComboBox = () => {
         </Form>
       )}
     </Formik>
+    </div>
   );
 };
 

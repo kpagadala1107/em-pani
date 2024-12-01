@@ -1,6 +1,6 @@
 // src/redux/formSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { saveWork } from "./api"
+import { saveWork } from "../redux/api"
 
 const initialState = {
   title: "",
@@ -18,7 +18,7 @@ const jobSlice = createSlice({
       const response = await saveWork(action.payload);
       console.log("Form saved successfully:", response);
       // Updates the state with the payload (form data)
-      return { ...state, ...action.payload };
+      // return { ...state, ...action.payload };
     },
     resetFormData: () => initialState, // Resets form to initial state
   },
