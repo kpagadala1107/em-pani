@@ -58,6 +58,7 @@
     padding: 0.75rem 1.5rem;
     border-radius: 5px;
     text-align: center;
+    float: right;
     font-size: 1rem;
     border: none;
     cursor: pointer;
@@ -66,5 +67,32 @@
   
   .form-field .btn:hover {
     background-color: #45a049;
+  }
+
+  .emails {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .select {
+    flex: 1;
+  }
+
+  .remove-btn {
+    flex: 0;
+  }
+
+  .add-btn {
+    display: inline-block;
+    width: 100px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
   }
   

@@ -8,7 +8,7 @@ import { saveFormData } from "../redux/JobSlice";
 
 // Define options for ComboBox
 const options = [
-  { value: "kiran", label: "kiran" },
+  { value: "kp@gmail.com", label: "Kiran Pagadala" },
   { value: "kumar", label: "kumar" },
   { value: "John", label: "John" },
   { value: "Ben", label: "Ben" },
@@ -81,12 +81,17 @@ const ExistingFormWithComboBox = () => {
             <ErrorMessage name="people" component="div" className="error" />
           </div>
 
+      
           <FieldArray name="dynamicFields">
             {({ push, remove }) => (
               <>
                 {values.dynamicFields.map((field, index) => (
-                  <div key={index} style={{ marginBottom: "10px" }}>
-                    <Select
+                  <div>
+                    <label>Vendors</label>
+               
+                  <div key={index} className="emails">
+                    
+                    <Select className="select"
                       options={options}
                       name={`dynamicFields[${index}]`}
                       value={values.dynamicFields[index] || null}
@@ -96,13 +101,13 @@ const ExistingFormWithComboBox = () => {
                       isSearchable
                       placeholder="Select an option"
                     />
-                    <button
+                    <button className="remove-btn"
                       type="button"
                       onClick={() => remove(index)}
                       disabled={values.dynamicFields.length === 1}
-                      style={{ marginLeft: "10px" }}
+                     
                     >
-                      Remove
+                      X
                     </button>
                     <ErrorMessage
                       name={`dynamicFields[${index}].label`}
@@ -110,14 +115,15 @@ const ExistingFormWithComboBox = () => {
                       style={{ color: "red" }}
                     />
                   </div>
+                  </div>
                 ))}
                 {values.dynamicFields.length < 3 && (
                   <button
                     type="button"
-                    className="btn"
+                    className="add-btn"
                     onClick={() => push({ label: "", value: "" })}
                   >
-                    Add Vendor
+                    + Add
                   </button>
                 )}
               </>
